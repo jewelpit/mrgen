@@ -6,5 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-yew = "*"
-yew-router = "*"
+log = "0.4"
+yew = "0.19"
+yew-router = "0.16"
+wasm-logger = "0.2"
