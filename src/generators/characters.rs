@@ -1,6 +1,7 @@
 use yew::prelude::*;
 
 use crate::generators::magic::get_spell;
+use crate::generators::npcs::get_name;
 use crate::roller::Rollable;
 
 struct Abilities {
@@ -562,7 +563,7 @@ pub fn characters() -> Html {
     html! {
         <div class="columns">
             <div class="column">
-                <h1 class="title has-text-centered">{"Kelebria"}</h1>
+                <h1 class="title has-text-centered">{get_name()}</h1>
                 <nav class="level">
                     <div class="level-item"></div>
                     <div class="level-item has-text-centered">
