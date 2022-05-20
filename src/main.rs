@@ -47,7 +47,7 @@ fn switch(routes: &Route) -> Html {
         },
 
         Route::Characters => html! { <generators::Characters /> },
-        // Route::Magic => html! { <Magic /> },
+        Route::Magic => html! { <generators::Magic /> },
         // Route::Monsters => html! { <Monsters /> },
         // Route::NPCs => html! { <NPCs /> },
         // Route::Items => html! { <Items /> },

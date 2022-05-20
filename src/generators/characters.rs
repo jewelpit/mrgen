@@ -1,5 +1,6 @@
 use yew::prelude::*;
 
+use crate::generators::magic::get_spell;
 use crate::roller::Rollable;
 
 struct Abilities {
@@ -68,8 +69,11 @@ impl std::fmt::Display for Features {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::AttackBonus => write!(f, "+1 attack bonus"),
-            Self::SpellSlot => write!(f, "1 spell slot"),
-            Self::Training(path) => write!(f, "Training: {}", path),
+            Self::SpellSlot => {
+                let (first, second) = get_spell();
+                write!(f, "spell slot: {} {}", first, second)
+            }
+            Self::Training(path) => write!(f, "{} training", path),
         }
     }
 }
@@ -556,91 +560,89 @@ pub fn characters() -> Html {
     let personal_traits = get_personal_traits();
 
     html! {
-        <div>
-            <div class="columns">
-                <div class="column">
-                    <h1 class="title has-text-centered">{"Kelebria"}</h1>
-                    <nav class="level">
-                        <div class="level-item"></div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"STR"}</p>
-                                <p class="subtitle">{abilities.str}</p>
-                            </div>
+        <div class="columns">
+            <div class="column">
+                <h1 class="title has-text-centered">{"Kelebria"}</h1>
+                <nav class="level">
+                    <div class="level-item"></div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"STR"}</p>
+                            <p class="subtitle">{abilities.str}</p>
                         </div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"DEX"}</p>
-                                <p class="subtitle">{abilities.dex}</p>
-                            </div>
-                        </div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"WIL"}</p>
-                                <p class="subtitle">{abilities.will}</p>
-                            </div>
-                        </div>
-                        <div class="level-item"></div>
-                    </nav>
-                    <table class="table is-bordered is-fullwidth">
-                        <tbody>
-                            <tr>
-                                <td><strong>{"Level 1"}</strong></td>
-                                <td>{format!("4 max health, {}", &starting_feature)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p class="subtitle">{"Combat"}</p>
-                    <nav class="level">
-                        <div class="level-item"></div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"ARMOR"}</p>
-                                <p class="subtitle">{if can_use_shield { 9 } else { 8 }}</p>
-                            </div>
-                        </div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"ATTACK"}</p>
-                                <p class="subtitle">{if starting_feature == Features::AttackBonus { "+1" } else { "0" }}</p>
-                            </div>
-                        </div>
-                        <div class="level-item has-text-centered">
-                            <div>
-                                <p class="heading">{"HEALTH"}</p>
-                                <p class="subtitle">{4}</p>
-                            </div>
-                        </div>
-                        <div class="level-item"></div>
-                    </nav>
-                    <div class="content">
-                        <ul>
-                            <li>{"Light armor (+1 armor)"}</li>
-                            <li>{
-                                format!(
-                                    "Shield (+1 armor, 1 hand{})",
-                                    if can_use_shield { "" } else { ", inactive: no 1h weapon" }
-                                )
-                            }</li>
-                            {starting_weapons.iter().map(|w| html! {<li>{w}</li>}).collect::<Html>()}
-                        </ul>
                     </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"DEX"}</p>
+                            <p class="subtitle">{abilities.dex}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"WIL"}</p>
+                            <p class="subtitle">{abilities.will}</p>
+                        </div>
+                    </div>
+                    <div class="level-item"></div>
+                </nav>
+                <table class="table is-bordered is-fullwidth">
+                    <tbody>
+                        <tr>
+                            <td><strong>{"Level 1"}</strong></td>
+                            <td>{format!("4 max health, {}", &starting_feature)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="subtitle">{"Combat"}</p>
+                <nav class="level">
+                    <div class="level-item"></div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"ARMOR"}</p>
+                            <p class="subtitle">{if can_use_shield { 9 } else { 8 }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"ATTACK"}</p>
+                            <p class="subtitle">{if starting_feature == Features::AttackBonus { "+1" } else { "0" }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">{"HEALTH"}</p>
+                            <p class="subtitle">{4}</p>
+                        </div>
+                    </div>
+                    <div class="level-item"></div>
+                </nav>
+                <div class="content">
+                    <ul>
+                        <li>{"Light armor (+1 armor)"}</li>
+                        <li>{
+                            format!(
+                                "Shield (+1 armor, 1 hand{})",
+                                if can_use_shield { "" } else { ", inactive: no 1h weapon" }
+                            )
+                        }</li>
+                        {starting_weapons.iter().map(|w| html! {<li>{w}</li>}).collect::<Html>()}
+                    </ul>
                 </div>
-                <div class="column">
-                    <p class="subtitle">{"Gear"}</p>
-                    <div class="content">
-                        <ul>
-                            {starting_items.iter().map(|item| html! {<li>{item}</li>}).collect::<Html>()}
-                        </ul>
-                    </div>
-                    <p class="subtitle">{"Personal"}</p>
-                    <div class="content">
-                        <ul>
-                            {personal_traits.iter().map(|(t, v)| html! {
-                                <li><strong>{format!("{}: ", t)}</strong>{v}</li>
-                            }).collect::<Html>()}
-                        </ul>
-                    </div>
+            </div>
+            <div class="column">
+                <p class="subtitle">{"Gear"}</p>
+                <div class="content">
+                    <ul>
+                        {starting_items.iter().map(|item| html! {<li>{item}</li>}).collect::<Html>()}
+                    </ul>
+                </div>
+                <p class="subtitle">{"Personal"}</p>
+                <div class="content">
+                    <ul>
+                        {personal_traits.iter().map(|(t, v)| html! {
+                            <li><strong>{format!("{}: ", t)}</strong>{v}</li>
+                        }).collect::<Html>()}
+                    </ul>
                 </div>
             </div>
         </div>
