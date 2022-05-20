@@ -6,7 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+getrandom = { version = "*", features = ["js"] }
+lazy_static = "1.4.0"
 log = "0.4"
+rand = "0.8"
+wasm-logger = "0.2"
 yew = "0.19"
 yew-router = "0.16"
-wasm-logger = "0.2"

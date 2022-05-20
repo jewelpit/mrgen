@@ -1,6 +1,9 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+mod generators;
+mod roller;
+
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
     #[at("/")]
@@ -43,7 +46,7 @@ fn switch(routes: &Route) -> Html {
             </>
         },
 
-        // Route::Characters => html! { <Characters /> },
+        Route::Characters => html! { <generators::Characters /> },
         // Route::Magic => html! { <Magic /> },
         // Route::Monsters => html! { <Monsters /> },
         // Route::NPCs => html! { <NPCs /> },
@@ -61,6 +64,12 @@ fn app() -> Html {
         <BrowserRouter>
             <nav class="navbar is-info has-shadow" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <span class="icon is-large">
+                            <span class="mdi mdi-36px mdi-rodent">
+                            </span>
+                        </span>
+                    </div>
                     <p class="navbar-item title" style="margin-bottom: 0px;">
                         {"Maze Rats Generator (unofficial)"}
                     </p>
