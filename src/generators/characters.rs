@@ -1,9 +1,11 @@
 use yew::prelude::*;
 
+use crate::components::RerollButton;
 use crate::generators::magic::get_spell;
 use crate::generators::npcs::get_name;
 use crate::roller::Rollable;
 
+#[derive(Clone, Copy, PartialEq)]
 struct Abilities {
     str: usize,
     dex: usize,
@@ -42,26 +44,28 @@ impl std::fmt::Display for TrainingPath {
 #[derive(Clone, PartialEq)]
 enum Features {
     AttackBonus,
-    SpellSlot,
+    SpellSlot(String),
     Training(TrainingPath),
 }
 
 impl Features {
     fn get() -> Self {
-        ([
-            Self::AttackBonus,
-            Self::SpellSlot,
-            Self::Training(
-                *([
-                    TrainingPath::Briarborn,
-                    TrainingPath::Fingersmith,
-                    TrainingPath::Roofrunner,
-                    TrainingPath::Shadowjack,
-                ])
-                .roll(),
-            ),
+        [
+            Box::new(|| Self::AttackBonus) as Box<dyn Fn() -> Self>,
+            Box::new(|| Self::SpellSlot(get_spell())),
+            Box::new(|| {
+                Self::Training(
+                    *([
+                        TrainingPath::Briarborn,
+                        TrainingPath::Fingersmith,
+                        TrainingPath::Roofrunner,
+                        TrainingPath::Shadowjack,
+                    ])
+                    .roll(),
+                )
+            }),
         ]
-        .roll())
+        .roll()()
         .clone()
     }
 }
@@ -70,9 +74,8 @@ impl std::fmt::Display for Features {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::AttackBonus => write!(f, "+1 attack bonus"),
-            Self::SpellSlot => {
-                let (first, second) = get_spell();
-                write!(f, "spell slot: {} {}", first, second)
+            Self::SpellSlot(spell) => {
+                write!(f, "spell slot: {}", spell)
             }
             Self::Training(path) => write!(f, "{} training", path),
         }
@@ -86,6 +89,7 @@ enum WeaponType {
     RangedWeapon,
 }
 
+#[derive(Clone, PartialEq)]
 struct Weapon {
     name: String,
     kind: WeaponType,
@@ -549,39 +553,79 @@ fn get_personal_traits() -> Vec<(String, String)> {
     ]
 }
 
-#[function_component(Characters)]
-pub fn characters() -> Html {
-    let abilities = Abilities::get();
-    let starting_feature = Features::get();
-    let starting_weapons = get_starting_weapons();
-    let can_use_shield = starting_weapons
+#[derive(Clone, PartialEq)]
+pub struct CharacterData {
+    name: String,
+    abilities: Abilities,
+    starting_feature: Features,
+    starting_weapons: Vec<Weapon>,
+    starting_items: Vec<String>,
+    personal_traits: Vec<(String, String)>,
+}
+
+impl CharacterData {
+    pub fn new() -> Self {
+        let name = get_name();
+        let abilities = Abilities::get();
+        let starting_feature = Features::get();
+        let starting_weapons = get_starting_weapons();
+        let starting_items = (0..5).map(|_| get_starting_item()).collect::<Vec<_>>();
+        let personal_traits = get_personal_traits();
+
+        Self {
+            name,
+            abilities,
+            starting_feature,
+            starting_weapons,
+            starting_items,
+            personal_traits,
+        }
+    }
+}
+
+#[derive(Clone, PartialEq, Properties)]
+pub struct CharacterProps {
+    pub data: CharacterData,
+    pub update: Callback<CharacterData>,
+}
+
+#[function_component(Character)]
+pub fn character(props: &CharacterProps) -> Html {
+    let reroll = {
+        let update = props.update.clone();
+        Callback::from(move |_| update.emit(CharacterData::new()))
+    };
+    let data = props.data.clone();
+    let can_use_shield = data
+        .starting_weapons
         .iter()
         .any(|w| w.kind == WeaponType::LightWeapon);
-    let starting_items = (0..5).map(|_| get_starting_item()).collect::<Vec<_>>();
-    let personal_traits = get_personal_traits();
 
     html! {
         <div class="columns">
             <div class="column">
-                <h1 class="title has-text-centered">{get_name()}</h1>
+                <nav class="level">
+                    <h1 class="level-item title has-text-centered" style={"margin: 0px;"}>{&data.name}</h1>
+                    <RerollButton onclick={reroll} />
+                </nav>
                 <nav class="level">
                     <div class="level-item"></div>
                     <div class="level-item has-text-centered">
                         <div>
                             <p class="heading">{"STR"}</p>
-                            <p class="subtitle">{abilities.str}</p>
+                            <p class="subtitle">{data.abilities.str}</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
                         <div>
                             <p class="heading">{"DEX"}</p>
-                            <p class="subtitle">{abilities.dex}</p>
+                            <p class="subtitle">{data.abilities.dex}</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
                         <div>
                             <p class="heading">{"WIL"}</p>
-                            <p class="subtitle">{abilities.will}</p>
+                            <p class="subtitle">{data.abilities.will}</p>
                         </div>
                     </div>
                     <div class="level-item"></div>
@@ -590,7 +634,7 @@ pub fn characters() -> Html {
                     <tbody>
                         <tr>
                             <td><strong>{"Level 1"}</strong></td>
-                            <td>{format!("4 max health, {}", &starting_feature)}</td>
+                            <td>{format!("4 max health, {}", &data.starting_feature)}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -606,7 +650,7 @@ pub fn characters() -> Html {
                     <div class="level-item has-text-centered">
                         <div>
                             <p class="heading">{"ATTACK"}</p>
-                            <p class="subtitle">{if starting_feature == Features::AttackBonus { "+1" } else { "0" }}</p>
+                            <p class="subtitle">{if data.starting_feature == Features::AttackBonus { "+1" } else { "0" }}</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
@@ -626,7 +670,7 @@ pub fn characters() -> Html {
                                 if can_use_shield { "" } else { ", inactive: no 1h weapon" }
                             )
                         }</li>
-                        {starting_weapons.iter().map(|w| html! {<li>{w}</li>}).collect::<Html>()}
+                        {data.starting_weapons.iter().map(|w| html! {<li>{w}</li>}).collect::<Html>()}
                     </ul>
                 </div>
             </div>
@@ -634,13 +678,13 @@ pub fn characters() -> Html {
                 <p class="subtitle">{"Gear"}</p>
                 <div class="content">
                     <ul>
-                        {starting_items.iter().map(|item| html! {<li>{item}</li>}).collect::<Html>()}
+                        {data.starting_items.iter().map(|item| html! {<li>{item}</li>}).collect::<Html>()}
                     </ul>
                 </div>
                 <p class="subtitle">{"Personal"}</p>
                 <div class="content">
                     <ul>
-                        {personal_traits.iter().map(|(t, v)| html! {
+                        {data.personal_traits.iter().map(|(t, v)| html! {
                             <li><strong>{format!("{}: ", t)}</strong>{v}</li>
                         }).collect::<Html>()}
                     </ul>

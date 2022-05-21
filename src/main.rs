@@ -1,6 +1,9 @@
+use std::rc::Rc;
+
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+mod components;
 mod generators;
 mod roller;
 
@@ -31,7 +34,14 @@ enum Route {
     NotFound,
 }
 
-fn switch(routes: &Route) -> Html {
+#[derive(Clone)]
+struct AppState {
+    character: generators::CharacterData,
+    spells: Rc<Vec<String>>,
+    npcs: Rc<Vec<String>>,
+}
+
+fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
     match routes {
         Route::Home => html! {
             <>
@@ -46,10 +56,34 @@ fn switch(routes: &Route) -> Html {
             </>
         },
 
-        Route::Characters => html! { <generators::Characters /> },
-        Route::Magic => html! { <generators::Magic /> },
+        Route::Characters => {
+            let state = state.clone();
+            let inner_state = (*state).clone();
+            html! {
+                <generators::Character
+                    data={state.character.clone()}
+                    update={Callback::once(move |c| state.set(AppState {character: c, ..inner_state}))} />
+            }
+        }
+        Route::Magic => {
+            let state = state.clone();
+            let inner_state = (*state).clone();
+            html! {
+                <generators::Magic
+                    spells={state.spells.clone()}
+                    update={Callback::once(move |s| state.set(AppState {spells: s, ..inner_state}))} />
+            }
+        }
         // Route::Monsters => html! { <Monsters /> },
-        Route::NPCs => html! { <generators::NPCs /> },
+        Route::NPCs => {
+            let state = state.clone();
+            let inner_state = (*state).clone();
+            html! {
+                <generators::NPCs
+                    npcs={state.npcs.clone()}
+                    update={Callback::once(move |n| state.set(AppState {npcs: n, ..inner_state}))} />
+            }
+        }
         // Route::Items => html! { <Items /> },
         // Route::Cities => html! { <Cities /> },
         // Route::TheWild => html! { <TheWild /> },
@@ -60,6 +94,12 @@ fn switch(routes: &Route) -> Html {
 
 #[function_component(Main)]
 fn app() -> Html {
+    let state = use_state(|| AppState {
+        character: generators::CharacterData::new(),
+        spells: generators::MagicProps::get_spells(),
+        npcs: generators::NPCProps::get_npcs(),
+    });
+
     html! {
         <BrowserRouter>
             <nav class="navbar is-info has-shadow" role="navigation" aria-label="main navigation">
@@ -94,7 +134,7 @@ fn app() -> Html {
                             </aside>
                         </div>
                         <div class="column">
-                            <Switch<Route> render={Switch::render(switch)} />
+                            <Switch<Route> render={Switch::render(move |r| switch(r, &state))} />
                         </div>
                     </div>
                 </div>

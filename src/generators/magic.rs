@@ -1,8 +1,11 @@
+use std::rc::Rc;
+
 use yew::prelude::*;
 
+use crate::components::RerollButton;
 use crate::roller::Rollable;
 
-pub fn get_spell() -> (String, String) {
+pub fn get_spell() -> String {
     let physical_effects = [
         [
             "Animating",
@@ -164,22 +167,42 @@ pub fn get_spell() -> (String, String) {
 
     let (first, second) = decision_table.roll().roll();
 
-    (
+    format!(
+        "{} {}",
         first.roll().roll().to_string(),
         second.roll().roll().to_string(),
     )
 }
 
+#[derive(Clone, PartialEq, Properties)]
+pub struct MagicProps {
+    pub spells: Rc<Vec<String>>,
+    pub update: Callback<Rc<Vec<String>>>,
+}
+
+impl MagicProps {
+    pub fn get_spells() -> Rc<Vec<String>> {
+        Rc::new((0..10).map(|_| get_spell()).collect())
+    }
+}
+
 #[function_component(Magic)]
-pub fn magic() -> Html {
+pub fn magic(props: &MagicProps) -> Html {
+    let reroll = {
+        let update = props.update.clone();
+        Callback::from(move |_| update.emit(MagicProps::get_spells()))
+    };
+
     html! {
         <>
-            <p class="title has-text-centered">{"Spells"}</p>
+        <nav class="level">
+            <h1 class="level-item title has-text-centered" style={"margin: 0px;"}>{"Spells"}</h1>
+            <RerollButton onclick={reroll} />
+        </nav>
             <div class="content">
                 <ol>{
-                    (0..10).map(|_| {
-                        let (first, second) = get_spell();
-                        html! { <li>{format!("{} {}", first, second)}</li> }
+                    props.spells.iter().map(|spell| {
+                        html! { <li>{spell}</li> }
                     }).collect::<Html>()
                 }</ol>
             </div>

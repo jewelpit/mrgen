@@ -1,8 +1,8 @@
 mod characters;
-pub use characters::Characters;
+pub use characters::{Character, CharacterData};
 
 mod magic;
-pub use magic::Magic;
+pub use magic::{Magic, MagicProps};
 
 mod npcs;
-pub use npcs::NPCs;
+pub use npcs::{NPCProps, NPCs};

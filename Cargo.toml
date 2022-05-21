@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 getrandom = { version = "*", features = ["js"] }
-lazy_static = "1.4.0"
 log = "0.4"
 rand = "0.8"
 wasm-logger = "0.2"
