@@ -16,18 +16,8 @@ enum Route {
     Characters,
     #[at("/magic")]
     Magic,
-    #[at("/monsters")]
-    Monsters,
     #[at("/npcs")]
     NPCs,
-    #[at("/items")]
-    Items,
-    #[at("/cities")]
-    Cities,
-    #[at("/wild")]
-    TheWild,
-    #[at("/maze")]
-    TheMaze,
 
     #[not_found]
     #[at("/404")]
@@ -74,7 +64,6 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
                     update={Callback::once(move |s| state.set(AppState {spells: s, ..inner_state}))} />
             }
         }
-        // Route::Monsters => html! { <Monsters /> },
         Route::NPCs => {
             let state = state.clone();
             let inner_state = (*state).clone();
@@ -84,11 +73,7 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
                     update={Callback::once(move |n| state.set(AppState {npcs: n, ..inner_state}))} />
             }
         }
-        // Route::Items => html! { <Items /> },
-        // Route::Cities => html! { <Cities /> },
-        // Route::TheWild => html! { <TheWild /> },
-        // Route::TheMaze => html! { <TheMaze /> },
-        Route::NotFound | _ => html! { <h1>{ "404" }</h1> },
+        Route::NotFound => html! { <h1 class="title">{ "404" }</h1> },
     }
 }
 
@@ -131,12 +116,7 @@ fn app() -> Html {
                                 <ul class="menu-list">
                                     <li><Link<Route> to={Route::Characters}>{"Characters"}</Link<Route>></li>
                                     <li><Link<Route> to={Route::Magic}>{"Magic"}</Link<Route>></li>
-                                    <li><Link<Route> to={Route::Monsters}>{"Monsters"}</Link<Route>></li>
                                     <li><Link<Route> to={Route::NPCs}>{"NPCs"}</Link<Route>></li>
-                                    <li><Link<Route> to={Route::Items}>{"Items"}</Link<Route>></li>
-                                    <li><Link<Route> to={Route::Cities}>{"Cities"}</Link<Route>></li>
-                                    <li><Link<Route> to={Route::TheWild}>{"The Wild"}</Link<Route>></li>
-                                    <li><Link<Route> to={Route::TheMaze}>{"The Maze"}</Link<Route>></li>
                                 </ul>
                             </aside>
                         </div>
