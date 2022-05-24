@@ -114,6 +114,13 @@ fn app() -> Html {
                         {"Maze Rats Generator (unofficial)"}
                     </p>
                 </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <a class="navbar-link is-arrowless" href="https://github.com/jewelpit/mrgen">{"source"}</a>
+                        </div>
+                    </div>
+                </div>
             </nav>
             <section class="section">
                 <div class="container">
