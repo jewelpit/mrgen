@@ -7,3 +7,7 @@ install-deps:
 
 serve:
     trunk serve
+
+build *ARGS:
+    trunk clean
+    trunk build --release=true {{ARGS}}
