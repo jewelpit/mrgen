@@ -5,6 +5,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[dev-dependencies]
+trunk = "0.16.0"
+
 [dependencies]
 getrandom = { version = "*", features = ["js"] }
 log = "0.4"

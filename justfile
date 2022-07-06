@@ -3,7 +3,7 @@ default:
 
 install-deps:
     rustup target add wasm32-unknown-unknown
-    cargo install trunk
+    cargo install --locked trunk
 
 serve:
     trunk serve
