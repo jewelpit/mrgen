@@ -389,6 +389,58 @@ fn get_asset() -> String {
     .roll()()
 }
 
+fn get_liability() -> String {
+    "liability".to_string()
+}
+
+fn get_goal() -> String {
+    "goal".to_string()
+}
+
+fn get_misfortune() -> String {
+    "misfortune".to_string()
+}
+
+fn get_mission() -> String {
+    "mission".to_string()
+}
+
+fn get_methods() -> String {
+    "methods".to_string()
+}
+
+fn get_appearance() -> String {
+    "appearance".to_string()
+}
+
+fn get_physical_details() -> String {
+    "physical_details".to_string()
+}
+
+fn get_clothing() -> String {
+    "clothing".to_string()
+}
+
+fn get_personality() -> String {
+    "personality".to_string()
+}
+
+fn get_mannerisms() -> String {
+    "mannerisms".to_string()
+}
+
+fn get_secret() -> String {
+    "secret".to_string()
+}
+
+fn get_reputation() -> String {
+    "reputation".to_string()
+}
+
+fn get_hobby() -> String {
+    "hobby".to_string()
+}
+
 #[derive(Clone, PartialEq, Properties)]
 pub struct NPCProps {
     pub npcs: Rc<Vec<NPCData>>,
@@ -403,19 +455,19 @@ impl NPCProps {
                     name: get_name(),
                     job: get_job(),
                     asset: get_asset(),
-                    liability: "liability".to_string(),
-                    goal: "goal".to_string(),
-                    misfortune: "misfortune".to_string(),
-                    mission: "mission".to_string(),
-                    methods: "methods".to_string(),
-                    appearance: "appearance".to_string(),
-                    physical_details: "physical_details".to_string(),
-                    clothing: "clothing".to_string(),
-                    personality: "personality".to_string(),
-                    mannerisms: "mannerisms".to_string(),
-                    secret: "secret".to_string(),
-                    reputation: "reputation".to_string(),
-                    hobby: "hobby".to_string(),
+                    liability: get_liability(),
+                    goal: get_goal(),
+                    misfortune: get_misfortune(),
+                    mission: get_mission(),
+                    methods: get_methods(),
+                    appearance: get_appearance(),
+                    physical_details: get_physical_details(),
+                    clothing: get_clothing(),
+                    personality: get_personality(),
+                    mannerisms: get_mannerisms(),
+                    secret: get_secret(),
+                    reputation: get_reputation(),
+                    hobby: get_hobby(),
                 })
                 .collect(),
         )
@@ -434,45 +486,51 @@ pub fn npcs(props: &NPCProps) -> Html {
         <nav class="level">
             <h1 class="level-item title has-text-centered" style={"margin: 0px;"}>{"NPCs"}</h1>
         </nav>
-            <div class="content">
-                <ol>{
-                    props.npcs.iter().map(|npc| {
-                        html! {
-                            <div class="block">
-                                <div class="card">
-                                    <header class="card-header">
-                                        <h4 class="card-header-title my-0 py-0">
-                                            {&npc.name}
-                                        </h4>
-                                        <span class="card-header-icon" aria-label="more options">
-                                            <RerollButton onclick={&reroll} />
-                                        </span>
-                                    </header>
-                                    <div class="card-content">
-                                        <div class="content">
-                                            {"job: "}{&npc.job}<br />
-                                            {"asset: "}{&npc.asset}<br />
+            {
+                props.npcs.iter().map(|npc| {
+                    html! {
+                        <div class="block">
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title subtitle my-0 py-0">
+                                        {&npc.name}
+                                    </p>
+                                    <span class="card-header-icon" aria-label="more options">
+                                        <RerollButton onclick={&reroll} />
+                                    </span>
+                                </header>
+                                <div class="card-content">
+                                    <div class="columns">
+                                        <div class="column">
+                                            <strong>{"Job: "}</strong>{&npc.job}<br />
+                                            {"reputation: "}{&npc.reputation}<br />
+                                            <strong>{"Asset: "}</strong>{&npc.asset}<br />
                                             {"liability: "}{&npc.liability}<br />
                                             {"goal: "}{&npc.goal}<br />
+                                        </div>
+                                        <div class="column">
                                             {"misfortune: "}{&npc.misfortune}<br />
                                             {"mission: "}{&npc.mission}<br />
                                             {"methods: "}{&npc.methods}<br />
                                             {"appearance: "}{&npc.appearance}<br />
                                             {"physical_details: "}{&npc.physical_details}<br />
+                                        </div>
+                                        <div class="column">
                                             {"clothing: "}{&npc.clothing}<br />
                                             {"personality: "}{&npc.personality}<br />
                                             {"mannerisms: "}{&npc.mannerisms}<br />
                                             {"secret: "}{&npc.secret}<br />
-                                            {"reputation: "}{&npc.reputation}<br />
                                             {"hobby: "}{&npc.hobby}<br />
                                         </div>
                                     </div>
+                                    <div class="content">
+                                    </div>
                                 </div>
                             </div>
-                        }
-                    }).collect::<Html>()
-                }</ol>
-            </div>
+                        </div>
+                    }
+                }).collect::<Html>()
+            }
         </>
     }
 }
