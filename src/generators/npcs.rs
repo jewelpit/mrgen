@@ -5,6 +5,8 @@ use yew::prelude::*;
 use crate::components::RerollButton;
 use crate::roller::Rollable;
 
+use super::city::get_faction;
+
 #[derive(Clone, PartialEq)]
 pub struct NPCData {
     name: String,
@@ -332,6 +334,61 @@ fn get_job() -> String {
     [get_civilized_job, get_underworld_job, get_wilderness_job].roll()()
 }
 
+fn get_asset() -> String {
+    [
+        [
+            || "Authority".to_string(),
+            || "Avoids detection".to_string(),
+            || "Calls in favors".to_string(),
+            || "Charming".to_string(),
+            || "Cooks the books".to_string(),
+            || "Erases evidence".to_string(),
+        ],
+        [
+            || "Excellent liar".to_string(),
+            || "Extremely rich".to_string(),
+            || format!("Leader of (Faction: {})", get_faction()),
+            || format!("Member of (Faction: {})", get_faction()),
+            || "Feared".to_string(),
+            || "Fortified base".to_string(),
+        ],
+        [
+            || "Gorgeous".to_string(),
+            || "Hears rumrs".to_string(),
+            || "Huge family".to_string(),
+            || "Huge library".to_string(),
+            || "Impersonator".to_string(),
+            || "Interrogator".to_string(),
+        ],
+        [
+            || "Knows a guy".to_string(),
+            || "Knows a way in".to_string(),
+            || "Launders money".to_string(),
+            || "Learned".to_string(),
+            || "Local celebrity".to_string(),
+            || "Local knowledge".to_string(),
+        ],
+        [
+            || "Loyal henchmen".to_string(),
+            || "Middling oracle".to_string(),
+            || "Nothing to lose".to_string(),
+            || "Owns the guards".to_string(),
+            || "Powerful spouse".to_string(),
+            || "Procures gear".to_string(),
+        ],
+        [
+            || "Pulls the strings".to_string(),
+            || "Secret lab".to_string(),
+            || "Sells contraband".to_string(),
+            || "Smuggles goods".to_string(),
+            || "Spy network".to_string(),
+            || "War hero".to_string(),
+        ],
+    ]
+    .roll()
+    .roll()()
+}
+
 #[derive(Clone, PartialEq, Properties)]
 pub struct NPCProps {
     pub npcs: Rc<Vec<NPCData>>,
@@ -345,7 +402,7 @@ impl NPCProps {
                 .map(|_| NPCData {
                     name: get_name(),
                     job: get_job(),
-                    asset: "asset".to_string(),
+                    asset: get_asset(),
                     liability: "liability".to_string(),
                     goal: "goal".to_string(),
                     misfortune: "misfortune".to_string(),
