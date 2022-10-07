@@ -5,6 +5,26 @@ use yew::prelude::*;
 use crate::components::RerollButton;
 use crate::roller::Rollable;
 
+#[derive(Clone, PartialEq)]
+pub struct NPCData {
+    name: String,
+    job: String,
+    asset: String,
+    liability: String,
+    goal: String,
+    misfortune: String,
+    mission: String,
+    methods: String,
+    appearance: String,
+    physical_details: String,
+    clothing: String,
+    personality: String,
+    mannerisms: String,
+    secret: String,
+    reputation: String,
+    hobby: String,
+}
+
 pub fn get_name() -> String {
     let given_name = [
         [
@@ -152,15 +172,196 @@ pub fn get_name() -> String {
     format!("{} {}", given_name, family_name)
 }
 
+fn get_civilized_job() -> String {
+    [
+        [
+            "Acolyte",
+            "Actor",
+            "Apothecary",
+            "Baker",
+            "Barber",
+            "Blacksmith",
+        ],
+        [
+            "Brewer",
+            "Bureaucrat",
+            "Butcher",
+            "Carpenter",
+            "Clockmaker",
+            "Courier",
+        ],
+        [
+            "Courtier",
+            "Diplomat",
+            "Fishmonger",
+            "Guard",
+            "Haberdasher",
+            "Innkeeper",
+        ],
+        [
+            "Item-seller",
+            "Jeweler",
+            "Knight",
+            "Locksmith",
+            "Mason",
+            "Miller",
+        ],
+        [
+            "Musician", "Noble", "Painter", "Priest", "Scholar", "Scribe",
+        ],
+        [
+            "Sculptor",
+            "Shipwright",
+            "Soldier",
+            "Tailor",
+            "Taxidermist",
+            "Wigmaker",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
+}
+
+fn get_underworld_job() -> String {
+    [
+        [
+            "Alchemist",
+            "Beggar-prince",
+            "Blackmailer",
+            "Bounty-hunter",
+            "Chimney sweep",
+            "Coin-clipper",
+        ],
+        [
+            "Contortionist",
+            "Counterfeiter",
+            "Cultist",
+            "Cutpurse",
+            "Debt-collector",
+            "Deserter",
+        ],
+        [
+            "Fence",
+            "Fortuneteller",
+            "Galley slave",
+            "Gambler",
+            "Gravedigger",
+            "Headsman",
+        ],
+        [
+            "Hedge knight",
+            "Highwayman",
+            "Housebreaker",
+            "Kidnapper",
+            "Mad prophet",
+            "Mountebank",
+        ],
+        [
+            "Peddler",
+            "Pit-fighter",
+            "Poisoner",
+            "Rat-catcher",
+            "Scrivener",
+            "Sellsword",
+        ],
+        [
+            "Slave",
+            "Smuggler",
+            "Street performer",
+            "Tattooist",
+            "Urchin",
+            "Usurer",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
+}
+
+fn get_wilderness_job() -> String {
+    [
+        [
+            "Apiarist",
+            "Bandit",
+            "Caravan guard",
+            "Caravaneer",
+            "Druid",
+            "Exile",
+        ],
+        [
+            "Explorer",
+            "Farmer",
+            "Fisherman",
+            "Forager",
+            "Fugitive",
+            "Hedge wizard",
+        ],
+        [
+            "Hermit",
+            "Hunter",
+            "Messenger",
+            "Minstrel",
+            "Monk",
+            "Monster hunter",
+        ],
+        [
+            "Outlander",
+            "Tinker",
+            "Pilgrim",
+            "Poacher",
+            "Raider",
+            "Ranger",
+        ],
+        ["Sage", "Scavenger", "Scout", "Shepherd", "Seer", "Surveyor"],
+        [
+            "Tinker",
+            "Tomb raider",
+            "Trader",
+            "Trapper",
+            "Witch",
+            "Woodcutter",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
+}
+
+fn get_job() -> String {
+    [get_civilized_job, get_underworld_job, get_wilderness_job].roll()()
+}
+
 #[derive(Clone, PartialEq, Properties)]
 pub struct NPCProps {
-    pub npcs: Rc<Vec<String>>,
-    pub update: Callback<Rc<Vec<String>>>,
+    pub npcs: Rc<Vec<NPCData>>,
+    pub update: Callback<Rc<Vec<NPCData>>>,
 }
 
 impl NPCProps {
-    pub fn get_npcs() -> Rc<Vec<String>> {
-        Rc::new((0..10).map(|_| get_name()).collect())
+    pub fn get_npcs() -> Rc<Vec<NPCData>> {
+        Rc::new(
+            (0..10)
+                .map(|_| NPCData {
+                    name: get_name(),
+                    job: get_job(),
+                    asset: "asset".to_string(),
+                    liability: "liability".to_string(),
+                    goal: "goal".to_string(),
+                    misfortune: "misfortune".to_string(),
+                    mission: "mission".to_string(),
+                    methods: "methods".to_string(),
+                    appearance: "appearance".to_string(),
+                    physical_details: "physical_details".to_string(),
+                    clothing: "clothing".to_string(),
+                    personality: "personality".to_string(),
+                    mannerisms: "mannerisms".to_string(),
+                    secret: "secret".to_string(),
+                    reputation: "reputation".to_string(),
+                    hobby: "hobby".to_string(),
+                })
+                .collect(),
+        )
     }
 }
 
@@ -175,12 +376,43 @@ pub fn npcs(props: &NPCProps) -> Html {
         <>
         <nav class="level">
             <h1 class="level-item title has-text-centered" style={"margin: 0px;"}>{"NPCs"}</h1>
-            <RerollButton onclick={reroll} />
         </nav>
             <div class="content">
                 <ol>{
-                    props.npcs.iter().map(|spell| {
-                        html! { <li>{spell}</li> }
+                    props.npcs.iter().map(|npc| {
+                        html! {
+                            <div class="block">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <h4 class="card-header-title my-0 py-0">
+                                            {&npc.name}
+                                        </h4>
+                                        <span class="card-header-icon" aria-label="more options">
+                                            <RerollButton onclick={&reroll} />
+                                        </span>
+                                    </header>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            {"job: "}{&npc.job}<br />
+                                            {"asset: "}{&npc.asset}<br />
+                                            {"liability: "}{&npc.liability}<br />
+                                            {"goal: "}{&npc.goal}<br />
+                                            {"misfortune: "}{&npc.misfortune}<br />
+                                            {"mission: "}{&npc.mission}<br />
+                                            {"methods: "}{&npc.methods}<br />
+                                            {"appearance: "}{&npc.appearance}<br />
+                                            {"physical_details: "}{&npc.physical_details}<br />
+                                            {"clothing: "}{&npc.clothing}<br />
+                                            {"personality: "}{&npc.personality}<br />
+                                            {"mannerisms: "}{&npc.mannerisms}<br />
+                                            {"secret: "}{&npc.secret}<br />
+                                            {"reputation: "}{&npc.reputation}<br />
+                                            {"hobby: "}{&npc.hobby}<br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }).collect::<Html>()
                 }</ol>
             </div>
