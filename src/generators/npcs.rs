@@ -450,27 +450,315 @@ fn get_goal() -> String {
 }
 
 fn get_misfortune() -> String {
-    "misfortune".to_string()
+    [
+        [
+            "Abandoned",
+            "Addicted",
+            "Arrested",
+            "Blackmailed",
+            "Burgled",
+            "Challenged",
+        ],
+        [
+            "Condemned",
+            "Crippled",
+            "Cursed",
+            "Defrauded",
+            "Demoted",
+            "Depressed",
+        ],
+        [
+            "Discredited",
+            "Dismissed",
+            "Disowned",
+            "Exiled",
+            "Famished",
+            "Forgotten",
+        ],
+        [
+            "Framed",
+            "Haunted",
+            "Humiliated",
+            "Impoverished",
+            "Kidnapped",
+            "Lost",
+        ],
+        [
+            "Mobbed",
+            "Mutilated",
+            "Overworked",
+            "Poisoned",
+            "Pursued",
+            "Rejected",
+        ],
+        [
+            "Replaced",
+            "Robbed",
+            "Sick",
+            "Sued",
+            "Suspected",
+            "Transformed",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_mission() -> String {
-    "mission".to_string()
+    [
+        [
+            "Apprehend",
+            "Assassinate",
+            "Blackmail",
+            "Burgle",
+            "Chart",
+            "Convince",
+        ],
+        [
+            "Deface",
+            "Defraud",
+            "Deliver",
+            "Destroy",
+            "Discredit",
+            "Escort",
+        ],
+        [
+            "Exfiltrate",
+            "Extort",
+            "Follow",
+            "Frame",
+            "Impersonate",
+            "Impress",
+        ],
+        [
+            "Infiltrate",
+            "Interrogate",
+            "investigate",
+            "Kidnap",
+            "Locate",
+            "Plant",
+        ],
+        ["Protect", "Raid", "Replace", "Retrieve", "Rob", "Ruin"],
+        [
+            "Sabotage",
+            "Smuggle",
+            "Surveil",
+            "Take over",
+            "Terrorize",
+            "Threaten",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_methods() -> String {
-    "methods".to_string()
+    [
+        [
+            "Alchemy",
+            "Blackmail",
+            "Bluster",
+            "Bribery",
+            "Bullying",
+            "Bureaucracy",
+        ],
+        [
+            "Charm",
+            "Commerce",
+            "Cronies",
+            "Debate",
+            "Deceit",
+            "Deduction",
+        ],
+        [
+            "Eloquence",
+            "Espionage",
+            "Fast-talking",
+            "Favors",
+            "Hard work",
+            "Humor",
+        ],
+        [
+            "Investigation",
+            "Legal maneuvers",
+            "Manipulation",
+            "Misdirection",
+            "Money",
+            "Nagging",
+        ],
+        [
+            "Negotiation",
+            "Persistence",
+            "Piety",
+            "Preparation",
+            "Quick wit",
+            "Research",
+        ],
+        [
+            "Rumors", "Sabotage", "Teamwork", "Theft", "Threats", "Violence",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_appearance() -> String {
-    "appearance".to_string()
+    [
+        [
+            "Aquiline",
+            "Athletic",
+            "Barrel-chested",
+            "Boney",
+            "Brawny",
+            "Brutish",
+        ],
+        [
+            "Bullnecked",
+            "Chiseled",
+            "Coltish",
+            "Corpulent",
+            "Craggy",
+            "Delicate",
+        ],
+        [
+            "Furrowed", "Gaunt", "Gorgeous", "Grizzled", "Haggard", "Handsome",
+        ],
+        ["Hideous", "Lanky", "Pudgy", "Ripped", "Rosy", "Scrawny"],
+        [
+            "Sinewy",
+            "Slender",
+            "Slumped",
+            "Solid",
+            "Square-jawed",
+            "Statuesque",
+        ],
+        [
+            "Towering",
+            "Trim",
+            "Weathered",
+            "Willowy",
+            "Wiry",
+            "Wrinkled",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_physical_details() -> String {
-    "physical_details".to_string()
+    [
+        [
+            "Acid scars",
+            "Battle scars",
+            "Birthmark",
+            "Braided hair",
+            "Brand mark",
+            "Broken nose",
+        ],
+        [
+            "Bronze skinned",
+            "Burn scars",
+            "Bushy eyebrows",
+            "Curly hair",
+            "Dark skinned",
+            "Dreadlocks",
+        ],
+        [
+            "Exotic accent",
+            "Flogging scars",
+            "Freckles",
+            "Gold tooth",
+            "Hoarse voice",
+            "Huge beard",
+        ],
+        [
+            "Long hair",
+            "Matted hair",
+            "Missing ear",
+            "Missing teeth",
+            "Mustache",
+            "Muttonchops",
+        ],
+        [
+            "Nine fingers",
+            "Oiled hair",
+            "One-eyed",
+            "Pale skinned",
+            "Piercings",
+            "Ritual scars",
+        ],
+        [
+            "Sallow skin",
+            "Shaved head",
+            "Sunburned",
+            "Tangled hair",
+            "Tattoos",
+            "Topknot",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_clothing() -> String {
-    "clothing".to_string()
+    [
+        [
+            "Antique",
+            "Battle-torn",
+            "Bedraggled",
+            "Blood-stained",
+            "Ceremonial",
+            "Dated",
+        ],
+        [
+            "Decaying",
+            "Eccentric",
+            "Elegant",
+            "Embroidered",
+            "Exotic",
+            "Fashionable",
+        ],
+        [
+            "Flamboyant",
+            "Food-stained",
+            "Formal",
+            "Frayed",
+            "Frumpy",
+            "Garish",
+        ],
+        [
+            "Grimy",
+            "Haute couture",
+            "Lacey",
+            "Livery",
+            "Mud-stained",
+            "Ostentatious",
+        ],
+        [
+            "Oversized",
+            "Patched",
+            "Patterened",
+            "Perfumed",
+            "Practical",
+            "Rumpled",
+        ],
+        [
+            "Sigils",
+            "Singed",
+            "Tasteless",
+            "Undersized",
+            "Wine-stained",
+            "Worn out",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 pub fn get_personality() -> String {
@@ -525,7 +813,59 @@ pub fn get_personality() -> String {
 }
 
 fn get_mannerisms() -> String {
-    "mannerisms".to_string()
+    [
+        [
+            "Anecdotes",
+            "Breathy",
+            "Chuckles",
+            "Clipped",
+            "Cryptic",
+            "Deep voice",
+        ],
+        [
+            "Drawl",
+            "Enunciates",
+            "Flowery speech",
+            "Gravelly voice",
+            "Highly formal",
+            "Hypnotic",
+        ],
+        [
+            "Interrupts",
+            "Laconic",
+            "Laughs",
+            "Long pauses",
+            "Melodious",
+            "Monotone",
+        ],
+        [
+            "Mumbles",
+            "Narrates",
+            "Overly casual",
+            "Quaint sayings",
+            "Rambles",
+            "Random facts",
+        ],
+        [
+            "Rapid-fire",
+            "Rhyming",
+            "Robotic",
+            "Slow speech",
+            "Speechifies",
+            "Squeaky",
+        ],
+        [
+            "Street slang",
+            "Stutters",
+            "Talks to self",
+            "Trails off",
+            "Very loud",
+            "Whispers",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_secret() -> String {
@@ -533,11 +873,115 @@ fn get_secret() -> String {
 }
 
 fn get_reputation() -> String {
-    "reputation".to_string()
+    [
+        [
+            "Ambitious",
+            "Authoritative",
+            "Boor",
+            "Borrower",
+            "Celebrity",
+            "Charitable",
+        ],
+        [
+            "Cheat",
+            "Dangerous",
+            "Entertainer",
+            "Gossip",
+            "Hardworking",
+            "Holy",
+        ],
+        [
+            "Honest",
+            "Hypochondriac",
+            "Idiot",
+            "Influential",
+            "Layabout",
+            "Leader",
+        ],
+        [
+            "Misanthrope",
+            "Misanthrope",
+            "Neighborly",
+            "Nutjob",
+            "Obnoxious",
+            "Overeducated",
+        ],
+        [
+            "Partier",
+            "Pious",
+            "Proper",
+            "Prophet of doom",
+            "Repulsive",
+            "Respected",
+        ],
+        [
+            "Riffraff",
+            "Scandalous",
+            "Slime ball",
+            "Terrifying",
+            "Weirdo",
+            "Wise",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_hobby() -> String {
-    "hobby".to_string()
+    [
+        [
+            "Archaeology",
+            "Art collecting",
+            "Bad fiction",
+            "Calligraphy",
+            "Card games",
+            "Clockwork",
+        ],
+        [
+            "Collecting cats",
+            "Cuisine",
+            "Dark lore",
+            "Dog breeding",
+            "Embroidery",
+            "Exercise",
+        ],
+        [
+            "Falconry",
+            "Fashion",
+            "Fishing",
+            "Foreign cultures",
+            "Gardening",
+            "History",
+        ],
+        [
+            "Horseracing",
+            "Hunting",
+            "Instrument",
+            "Knitting",
+            "Lawn games",
+            "Mountaineering",
+        ],
+        [
+            "Opera",
+            "Painting",
+            "Poetry",
+            "Puzzle-solving",
+            "Riddling",
+            "Science",
+        ],
+        [
+            "Sculpture",
+            "Sketching",
+            "Smoking",
+            "Theater",
+            "Weaving",
+            "Whiskey",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -602,24 +1046,24 @@ pub fn npcs(props: &NPCProps) -> Html {
                                     <div class="columns">
                                         <div class="column">
                                             <strong>{"Job: "}</strong>{&npc.job}<br />
-                                            {"reputation: "}{&npc.reputation}<br />
+                                            <strong>{"Reputation: "}</strong>{&npc.reputation}<br />
                                             <strong>{"Asset: "}</strong>{&npc.asset}<br />
                                             <strong>{"Liability: "}</strong>{&npc.liability}<br />
                                             {"goal: "}{&npc.goal}<br />
                                         </div>
                                         <div class="column">
-                                            {"misfortune: "}{&npc.misfortune}<br />
-                                            {"mission: "}{&npc.mission}<br />
-                                            {"methods: "}{&npc.methods}<br />
-                                            {"appearance: "}{&npc.appearance}<br />
-                                            {"physical_details: "}{&npc.physical_details}<br />
+                                            <strong>{"Misfortune: "}</strong>{&npc.misfortune}<br />
+                                            <strong>{"Mission: "}</strong>{&npc.mission}<br />
+                                            <strong>{"Methods: "}</strong>{&npc.methods}<br />
+                                            <strong>{"Appearance: "}</strong>{&npc.appearance}<br />
+                                            <strong>{"Physical details: "}</strong>{&npc.physical_details}<br />
                                         </div>
                                         <div class="column">
-                                            {"clothing: "}{&npc.clothing}<br />
-                                            {"personality: "}{&npc.personality}<br />
-                                            {"mannerisms: "}{&npc.mannerisms}<br />
+                                            <strong>{"Clothing: "}</strong>{&npc.clothing}<br />
+                                            <strong>{"Personality: "}</strong>{&npc.personality}<br />
+                                            <strong>{"Mannerisms: "}</strong>{&npc.mannerisms}<br />
                                             {"secret: "}{&npc.secret}<br />
-                                            {"hobby: "}{&npc.hobby}<br />
+                                            <strong>{"Hobby: "}</strong>{&npc.hobby}<br />
                                         </div>
                                     </div>
                                     <div class="content">
