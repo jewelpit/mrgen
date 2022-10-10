@@ -6,6 +6,7 @@ use crate::components::RerollButton;
 use crate::roller::Rollable;
 
 use super::city::get_faction;
+use super::magic::get_insanity;
 
 #[derive(Clone, PartialEq)]
 pub struct NPCData {
@@ -390,7 +391,58 @@ fn get_asset() -> String {
 }
 
 fn get_liability() -> String {
-    "liability".to_string()
+    [
+        [
+            || "Addiction".to_string(),
+            || "Alcoholic".to_string(),
+            || "Corrupt ally".to_string(),
+            || "Coward".to_string(),
+            || "Decadent".to_string(),
+            || "Forbidden love".to_string(),
+        ],
+        [
+            || "Gambler".to_string(),
+            || "Glutton".to_string(),
+            || "Greedy".to_string(),
+            || "Heretic".to_string(),
+            || "Huge debts".to_string(),
+            || "Imposter".to_string(),
+        ],
+        [
+            get_insanity,
+            || "Jealous".to_string(),
+            || "Leaves evidence".to_string(),
+            || "Many enemies".to_string(),
+            || "Misinformed".to_string(),
+            || "Money trail".to_string(),
+        ],
+        [
+            || "Narcissist".to_string(),
+            || "Needs medicine".to_string(),
+            || "OCD".to_string(),
+            || "Paranoid".to_string(),
+            || "Partyer".to_string(),
+            || "Poor equipment".to_string(),
+        ],
+        [
+            || "Protective".to_string(),
+            || "Scandalous".to_string(),
+            || "Softhearted".to_string(),
+            || "Strict routines".to_string(),
+            || "Superstitious".to_string(),
+            || "Suspicious".to_string(),
+        ],
+        [
+            || "Temper".to_string(),
+            || "Trusting".to_string(),
+            || "Vulnerable base".to_string(),
+            || "Wanted".to_string(),
+            || "Weak-willed".to_string(),
+            || "Widely despised".to_string(),
+        ],
+    ]
+    .roll()
+    .roll()()
 }
 
 fn get_goal() -> String {
@@ -421,8 +473,55 @@ fn get_clothing() -> String {
     "clothing".to_string()
 }
 
-fn get_personality() -> String {
-    "personality".to_string()
+pub fn get_personality() -> String {
+    [
+        [
+            "Bitter", "Brave", "Cautious", "Chipper", "Contrary", "Cowardly",
+        ],
+        [
+            "Cunning",
+            "Driven",
+            "Entitled",
+            "Gregarious",
+            "Grumpy",
+            "Heartless",
+        ],
+        [
+            "Honor-bound",
+            "Hotheaded",
+            "Inquisitive",
+            "Irascible",
+            "Jolly",
+            "Know-it-all",
+        ],
+        [
+            "Lazy",
+            "Loyal",
+            "Menacing",
+            "Mopey",
+            "Nervous",
+            "Protective",
+        ],
+        [
+            "Righteous",
+            "Rude",
+            "Sarcastic",
+            "Savage",
+            "Scheming",
+            "Serene",
+        ],
+        [
+            "Spacey",
+            "Stoic",
+            "Stubborn",
+            "Stuck-up",
+            "Suspicious",
+            "Wisecracking",
+        ],
+    ]
+    .roll()
+    .roll()
+    .to_string()
 }
 
 fn get_mannerisms() -> String {
@@ -505,7 +604,7 @@ pub fn npcs(props: &NPCProps) -> Html {
                                             <strong>{"Job: "}</strong>{&npc.job}<br />
                                             {"reputation: "}{&npc.reputation}<br />
                                             <strong>{"Asset: "}</strong>{&npc.asset}<br />
-                                            {"liability: "}{&npc.liability}<br />
+                                            <strong>{"Liability: "}</strong>{&npc.liability}<br />
                                             {"goal: "}{&npc.goal}<br />
                                         </div>
                                         <div class="column">
