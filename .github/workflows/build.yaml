@@ -15,4 +15,4 @@ jobs:
       - name: Install dependencies
         run: cargo install just --debug && just install-deps --debug
       - name: Build
-        run: trunk clean && trunk build --debug
+        run: trunk build
