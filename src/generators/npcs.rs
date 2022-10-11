@@ -348,8 +348,8 @@ fn get_asset() -> String {
         [
             || "Excellent liar".to_string(),
             || "Extremely rich".to_string(),
-            || format!("Leader of (Faction: {})", get_faction()),
-            || format!("Member of (Faction: {})", get_faction()),
+            || format!("Leader of <{}>", get_faction()),
+            || format!("Member of <{}>", get_faction()),
             || "Feared".to_string(),
             || "Fortified base".to_string(),
         ],
@@ -446,7 +446,58 @@ fn get_liability() -> String {
 }
 
 fn get_goal() -> String {
-    "goal".to_string()
+    [
+        [
+            || "A better life".to_string(),
+            || "Acceptance".to_string(),
+            || "Acquire a specific item".to_string(),
+            || "Craft a specific item".to_string(),
+            || format!("Destroy <{}>", get_faction()),
+            || "Destroy a specific item".to_string(),
+        ],
+        [
+            || "Enlightenment".to_string(),
+            || "Fame".to_string(),
+            || format!("Found <{}>", get_faction()),
+            || "Freedom".to_string(),
+            || "Glory".to_string(),
+            || "Impress a specific NPC".to_string(),
+        ],
+        [
+            || "Infamy".to_string(),
+            || format!("Infiltrate <{}>", get_faction()),
+            || "Justice".to_string(),
+            || "Kidnap a specific NPC".to_string(),
+            || format!("Lead <{}>", get_faction()),
+            || "Learning".to_string(),
+        ],
+        [
+            || "Locate a specific NPC".to_string(),
+            || "Love".to_string(),
+            || "Mastery".to_string(),
+            || "Power".to_string(),
+            || "Reach a location".to_string(),
+            || "Rescue a specific NPC".to_string(),
+        ],
+        [
+            || "Resolve a dispute".to_string(),
+            || format!("Restore <{}>", get_faction()),
+            || "Reveal a secret".to_string(),
+            || "Revenge".to_string(),
+            || format!("Sabotage <{}>", get_faction()),
+            || "Serve a deity".to_string(),
+        ],
+        [
+            || "Serve evil".to_string(),
+            || format!("Serve <{}>", get_faction()),
+            || "Serve an ideology".to_string(),
+            || "Serve a leader".to_string(),
+            || "Serve the needy".to_string(),
+            || "Wealth".to_string(),
+        ],
+    ]
+    .roll()
+    .roll()()
 }
 
 fn get_misfortune() -> String {
@@ -869,7 +920,58 @@ fn get_mannerisms() -> String {
 }
 
 fn get_secret() -> String {
-    "secret".to_string()
+    [
+        [
+            || "Addicted".to_string(),
+            || "Artificial".to_string(),
+            || "Assassin".to_string(),
+            || "Bankrupt".to_string(),
+            || "Beholden".to_string(),
+            || "Counterspy".to_string(),
+        ],
+        [
+            || "Cultist".to_string(),
+            || "Demigod".to_string(),
+            || "Evil lineage".to_string(),
+            || "Exile".to_string(),
+            || "Fence".to_string(),
+            || "Fugitive".to_string(),
+        ],
+        [
+            || "Ghost".to_string(),
+            || "Has a child".to_string(),
+            || "Heretic".to_string(),
+            || "High born".to_string(),
+            || "Huge fortune".to_string(),
+            || "Illusion".to_string(),
+        ],
+        [
+            || "Insurrectionist".to_string(),
+            || "Low born".to_string(),
+            || "Married".to_string(),
+            || "Mind-controlled".to_string(),
+            get_misfortune,
+            || "Monster hunter".to_string(),
+        ],
+        [
+            || "Non-human".to_string(),
+            || "A specific NPC".to_string(),
+            || "Polygamist".to_string(),
+            || "Protects relic".to_string(),
+            || "Scandalous birth".to_string(),
+            || "Secret police".to_string(),
+        ],
+        [
+            || "Serial killer".to_string(),
+            || "Smuggler".to_string(),
+            || "Spy".to_string(),
+            || "Time traveler".to_string(),
+            || "Transformed".to_string(),
+            || "War criminal".to_string(),
+        ],
+    ]
+    .roll()
+    .roll()()
 }
 
 fn get_reputation() -> String {
@@ -1049,7 +1151,7 @@ pub fn npcs(props: &NPCProps) -> Html {
                                             <strong>{"Reputation: "}</strong>{&npc.reputation}<br />
                                             <strong>{"Asset: "}</strong>{&npc.asset}<br />
                                             <strong>{"Liability: "}</strong>{&npc.liability}<br />
-                                            {"goal: "}{&npc.goal}<br />
+                                            <strong>{"Goal: "}</strong>{&npc.goal}<br />
                                         </div>
                                         <div class="column">
                                             <strong>{"Misfortune: "}</strong>{&npc.misfortune}<br />
@@ -1062,7 +1164,7 @@ pub fn npcs(props: &NPCProps) -> Html {
                                             <strong>{"Clothing: "}</strong>{&npc.clothing}<br />
                                             <strong>{"Personality: "}</strong>{&npc.personality}<br />
                                             <strong>{"Mannerisms: "}</strong>{&npc.mannerisms}<br />
-                                            {"secret: "}{&npc.secret}<br />
+                                            <strong>{"Secret: "}</strong>{&npc.secret}<br />
                                             <strong>{"Hobby: "}</strong>{&npc.hobby}<br />
                                         </div>
                                     </div>
