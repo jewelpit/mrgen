@@ -5,8 +5,11 @@ use yew::prelude::*;
 use crate::components::RerollButton;
 use crate::roller::Rollable;
 
-pub fn get_spell() -> String {
-    let physical_effects = [
+use super::monsters::{get_animal, get_monster_ability, get_monster_feature, get_monster_trait};
+use super::npcs::get_personality;
+
+pub fn get_physical_effect() -> &'static str {
+    [
         [
             "Animating",
             "Attracting",
@@ -55,24 +58,39 @@ pub fn get_spell() -> String {
             "Transmuting",
             "Transporting",
         ],
-    ];
-    let physical_elements = [
+    ]
+    .roll()
+    .roll()
+}
+
+pub fn get_physical_element() -> &'static str {
+    [
         ["Acid", "Amber", "Bark", "Blood", "Bone", "Brine"],
         ["Clay", "Crow", "Crystal", "Ember", "Flesh", "Fungus"],
         ["Glass", "Honey", "Ice", "Insect", "Wood", "Lava"],
         ["Moss", "Obsidian", "Oil", "Poison", "Rat", "Salt"],
         ["Sand", "Sap", "Serpent", "Slime", "Stone", "Tar"],
         ["Thorn", "Vine", "Water", "Wine", "Wood", "Worm"],
-    ];
-    let physical_forms = [
+    ]
+    .roll()
+    .roll()
+}
+
+pub fn get_physical_form() -> &'static str {
+    [
         ["Altar", "Armor", "Arrow", "Beast", "Blade", "Cauldron"],
         ["Chain", "Chariot", "Claw", "Cloak", "Colossus", "Crown"],
         ["Elemental", "Eye", "Fountain", "Gate", "Golem", "Hammer"],
         ["Horn", "Key", "Mask", "Monolith", "Pit", "Prison"],
         ["Sentinel", "Servant", "Shield", "Spear", "Steed", "Swarm"],
         ["Tentacle", "Throne", "Torch", "Trap", "Wall", "Web"],
-    ];
-    let ethereal_effects = [
+    ]
+    .roll()
+    .roll()
+}
+
+pub fn get_ethereal_effect() -> &'static str {
+    [
         [
             "Avenging",
             "Banishing",
@@ -121,8 +139,13 @@ pub fn get_spell() -> String {
             "Wearying",
             "Withering",
         ],
-    ];
-    let ethereal_elements = [
+    ]
+    .roll()
+    .roll()
+}
+
+pub fn get_ethereal_element() -> &'static str {
+    [
         ["Ash", "Chaos", "Distortion", "Dream", "Dust", "Echo"],
         ["Ectoplasm", "Fire", "Fog", "Ghost", "Harmony", "Heat"],
         [
@@ -136,42 +159,102 @@ pub fn get_spell() -> String {
         ["Plague", "Plasma", "Probability", "Rain", "Rot", "Shadow"],
         ["Smoke", "Snow", "Soul", "Star", "Stasis", "Steam"],
         ["Thunder", "Time", "Void", "Warp", "Whisper", "Wind"],
-    ];
-    let ethereal_forms = [
+    ]
+    .roll()
+    .roll()
+}
+
+fn get_ethereal_form() -> &'static str {
+    [
         ["Aura", "Beacon", "Beam", "Blast", "Blob", "Bolt"],
         ["Bubble", "Call", "Cascade", "Circle", "Cloud", "Coil"],
         ["Cone", "Cube", "Dance", "Disk", "Field", "Form"],
         ["Gaze", "Loop", "Moment", "Nexus", "Portal", "Pulse"],
         ["Pyramid", "Ray", "Shard", "Sphere", "Spray", "Storm"],
         ["Swarm", "Torrent", "Touch", "Vortex", "Wave", "Word"],
-    ];
+    ]
+    .roll()
+    .roll()
+}
 
-    let decision_table = [
+pub fn get_spell() -> String {
+    let decision_table: [[(&dyn Fn() -> &'static str, &dyn Fn() -> &'static str); 6]; 2] = [
         [
-            (&physical_effects, &physical_forms),
-            (&physical_effects, &ethereal_forms),
-            (&ethereal_effects, &physical_forms),
-            (&ethereal_effects, &ethereal_forms),
-            (&physical_elements, &physical_forms),
-            (&physical_elements, &ethereal_forms),
+            (&get_physical_effect, &get_physical_form),
+            (&get_physical_effect, &get_ethereal_form),
+            (&get_ethereal_effect, &get_physical_form),
+            (&get_ethereal_effect, &get_ethereal_form),
+            (&get_physical_element, &get_physical_form),
+            (&get_physical_element, &get_ethereal_form),
         ],
         [
-            (&ethereal_elements, &physical_forms),
-            (&ethereal_elements, &ethereal_forms),
-            (&physical_effects, &physical_elements),
-            (&physical_effects, &ethereal_elements),
-            (&ethereal_effects, &physical_elements),
-            (&ethereal_effects, &ethereal_elements),
+            (&get_ethereal_element, &get_physical_form),
+            (&get_ethereal_element, &get_ethereal_form),
+            (&get_physical_effect, &get_physical_element),
+            (&get_physical_effect, &get_ethereal_element),
+            (&get_ethereal_effect, &get_physical_element),
+            (&get_ethereal_effect, &get_ethereal_element),
         ],
     ];
 
     let (first, second) = decision_table.roll().roll();
 
-    format!(
-        "{} {}",
-        first.roll().roll().to_string(),
-        second.roll().roll().to_string(),
-    )
+    format!("{} {}", first().to_string(), second().to_string(),)
+}
+
+pub fn get_insanity() -> String {
+    [
+        [
+            || "Always lies".to_string(),
+            || "Always polite".to_string(),
+            || format!("Belief: {}-form", get_animal()),
+            || "Cannot count".to_string(),
+            || "Cannot lie".to_string(),
+            || "Faceblind".to_string(),
+        ],
+        [
+            || "Fears birds".to_string(),
+            || "Fears blood".to_string(),
+            || "Fears books".to_string(),
+            || "Fears darkness".to_string(),
+            || "Fears fire".to_string(),
+            || "Fears gold".to_string(),
+        ],
+        [
+            || "Fears horses".to_string(),
+            || "Fears iron".to_string(),
+            || "Fears music".to_string(),
+            || "Fears own hand".to_string(),
+            || "Fears a player character".to_string(),
+            || "Fears rain".to_string(),
+        ],
+        [
+            || "Fears rivers".to_string(),
+            || "Fears silence".to_string(),
+            || "Fears sleep".to_string(),
+            || "Fears sunlight".to_string(),
+            || "Fears the moon".to_string(),
+            || "Fears trees".to_string(),
+        ],
+        [
+            || "Belief: is a genius".to_string(),
+            || "Belief: is gorgeous".to_string(),
+            || "Hates violence".to_string(),
+            || "Belief: is invisible".to_string(),
+            || "Belief: is invulnerable".to_string(),
+            || format!("Belief: {}", get_monster_ability()),
+        ],
+        [
+            || format!("Belief: {}", get_monster_feature()),
+            || format!("Belief: {}", get_monster_trait()),
+            || "Must sing".to_string(),
+            || format!("New personality: {}", get_personality()),
+            || "Says thoughts".to_string(),
+            || "Sees dead people".to_string(),
+        ],
+    ]
+    .roll()
+    .roll()()
 }
 
 #[derive(Clone, PartialEq, Properties)]

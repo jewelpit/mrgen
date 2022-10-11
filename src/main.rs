@@ -26,9 +26,9 @@ enum Route {
 
 #[derive(Clone)]
 struct AppState {
-    character: generators::CharacterData,
+    character: generators::characters::CharacterData,
     spells: Rc<Vec<String>>,
-    npcs: Rc<Vec<String>>,
+    npcs: Rc<Vec<generators::npcs::NPCData>>,
 }
 
 fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
@@ -50,7 +50,7 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
             let state = state.clone();
             let inner_state = (*state).clone();
             html! {
-                <generators::Character
+                <generators::characters::Character
                     data={state.character.clone()}
                     update={Callback::once(move |c| state.set(AppState {character: c, ..inner_state}))} />
             }
@@ -59,7 +59,7 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
             let state = state.clone();
             let inner_state = (*state).clone();
             html! {
-                <generators::Magic
+                <generators::magic::Magic
                     spells={state.spells.clone()}
                     update={Callback::once(move |s| state.set(AppState {spells: s, ..inner_state}))} />
             }
@@ -68,7 +68,7 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
             let state = state.clone();
             let inner_state = (*state).clone();
             html! {
-                <generators::NPCs
+                <generators::npcs::NPCs
                     npcs={state.npcs.clone()}
                     update={Callback::once(move |n| state.set(AppState {npcs: n, ..inner_state}))} />
             }
@@ -80,9 +80,9 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
 #[function_component(Main)]
 fn app() -> Html {
     let state = use_state(|| AppState {
-        character: generators::CharacterData::new(),
-        spells: generators::MagicProps::get_spells(),
-        npcs: generators::NPCProps::get_npcs(),
+        character: generators::characters::CharacterData::new(),
+        spells: generators::magic::MagicProps::get_spells(),
+        npcs: generators::npcs::NPCProps::get_npcs(),
     });
 
     html! {
