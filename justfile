@@ -1,9 +1,9 @@
 default:
     just --list
 
-install-deps:
+install-deps *ARGS:
     rustup target add wasm32-unknown-unknown
-    cargo install --locked trunk
+    cargo install --locked trunk {{ARGS}}
 
 serve:
     trunk serve
