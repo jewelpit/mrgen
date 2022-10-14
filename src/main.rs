@@ -66,11 +66,18 @@ fn switch(routes: &Route, state: &UseStateHandle<AppState>) -> Html {
         }
         Route::NPCs => {
             let state = state.clone();
+            let other_state = state.clone();
             let inner_state = (*state).clone();
+            let other_inner_state = (*state).clone();
             html! {
                 <generators::npcs::NPCs
                     npcs={state.npcs.clone()}
-                    update={Callback::once(move |n| state.set(AppState {npcs: n, ..inner_state}))} />
+                    update={Callback::once(move |n| state.set(AppState {npcs: n, ..inner_state}))}
+                    update_single={Callback::once(move |(i, n)| {
+                        let mut new_npcs = inner_state.npcs.as_ref().clone();
+                        new_npcs[i] = n;
+                        other_state.set(AppState { npcs: Rc::new(new_npcs), ..other_inner_state });
+                    })} />
             }
         }
         Route::NotFound => html! { <h1 class="title">{ "404" }</h1> },

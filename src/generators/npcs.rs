@@ -1090,32 +1090,33 @@ fn get_hobby() -> String {
 pub struct NPCProps {
     pub npcs: Rc<Vec<NPCData>>,
     pub update: Callback<Rc<Vec<NPCData>>>,
+    pub update_single: Callback<(usize, NPCData)>,
 }
 
 impl NPCProps {
+    pub fn get_npc() -> NPCData {
+        NPCData {
+            name: get_name(),
+            job: get_job(),
+            asset: get_asset(),
+            liability: get_liability(),
+            goal: get_goal(),
+            misfortune: get_misfortune(),
+            mission: get_mission(),
+            methods: get_methods(),
+            appearance: get_appearance(),
+            physical_details: get_physical_details(),
+            clothing: get_clothing(),
+            personality: get_personality(),
+            mannerisms: get_mannerisms(),
+            secret: get_secret(),
+            reputation: get_reputation(),
+            hobby: get_hobby(),
+        }
+    }
+
     pub fn get_npcs() -> Rc<Vec<NPCData>> {
-        Rc::new(
-            (0..10)
-                .map(|_| NPCData {
-                    name: get_name(),
-                    job: get_job(),
-                    asset: get_asset(),
-                    liability: get_liability(),
-                    goal: get_goal(),
-                    misfortune: get_misfortune(),
-                    mission: get_mission(),
-                    methods: get_methods(),
-                    appearance: get_appearance(),
-                    physical_details: get_physical_details(),
-                    clothing: get_clothing(),
-                    personality: get_personality(),
-                    mannerisms: get_mannerisms(),
-                    secret: get_secret(),
-                    reputation: get_reputation(),
-                    hobby: get_hobby(),
-                })
-                .collect(),
-        )
+        Rc::new((0..10).map(|_| Self::get_npc()).collect())
     }
 }
 
@@ -1130,9 +1131,11 @@ pub fn npcs(props: &NPCProps) -> Html {
         <>
         <nav class="level">
             <h1 class="level-item title has-text-centered" style={"margin: 0px;"}>{"NPCs"}</h1>
+            <RerollButton onclick={&reroll} text={"Reroll all!".to_string()} />
         </nav>
             {
-                props.npcs.iter().map(|npc| {
+                props.npcs.iter().enumerate().map(|(idx, npc)| {
+                    let inner_update_single = props.update_single.clone();
                     html! {
                         <div class="block">
                             <div class="card">
@@ -1141,7 +1144,9 @@ pub fn npcs(props: &NPCProps) -> Html {
                                         {&npc.name}
                                     </p>
                                     <span class="card-header-icon" aria-label="more options">
-                                        <RerollButton onclick={&reroll} />
+                                        <RerollButton onclick={Callback::from(move |_| {
+                                            inner_update_single.emit((idx, NPCProps::get_npc()))
+                                        })} />
                                     </span>
                                 </header>
                                 <div class="card-content">
